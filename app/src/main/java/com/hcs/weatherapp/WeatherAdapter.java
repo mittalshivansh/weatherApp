@@ -12,12 +12,8 @@ import android.widget.TextView;
  */
 public class WeatherAdapter extends ArrayAdapter {
 
-    private WeatherData[] weatherDataList;
-
     public WeatherAdapter(Context context, int resource, WeatherData[] objects) {
         super(context, resource, objects);
-        weatherDataList = objects;
-
     }
 
     @Override
@@ -36,10 +32,11 @@ public class WeatherAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        viewHolder.dateView.setText(weatherDataList[position].date);
-        viewHolder.descriptionView.setText(weatherDataList[position].description);
-        viewHolder.lowTempView.setText(weatherDataList[position].mintemp);
-        viewHolder.highTempView.setText(weatherDataList[position].maxtemp);
+        WeatherData weatherData = (WeatherData) getItem(position);
+        viewHolder.dateView.setText(weatherData.getDate());
+        viewHolder.descriptionView.setText(weatherData.getDescription());
+        viewHolder.lowTempView.setText(weatherData.getMintemp());
+        viewHolder.highTempView.setText(weatherData.getMaxtemp());
         return view;
     }
 
@@ -50,7 +47,6 @@ public class WeatherAdapter extends ArrayAdapter {
         TextView highTempView;
         TextView lowTempView;
     }
-
 
 }
 

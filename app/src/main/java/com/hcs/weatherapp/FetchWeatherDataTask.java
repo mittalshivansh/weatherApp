@@ -33,6 +33,8 @@ public class FetchWeatherDataTask extends AsyncTask<Void, Void, Void> {
         this.activity = activity;
     }
 
+
+
     @Override
     protected Void doInBackground(Void... voids) {
         InputStream is = null;
@@ -73,7 +75,8 @@ public class FetchWeatherDataTask extends AsyncTask<Void, Void, Void> {
         }
         // try parse the string to a JSON object
         try {
-            weatherJsonObject = new JSONObject(json);
+            if (json != null)
+                weatherJsonObject = new JSONObject(json);
         } catch (JSONException e) {
             Log.e("JSON Parser", "Error parsing data " + e.toString());
         }
@@ -83,25 +86,28 @@ public class FetchWeatherDataTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         WeatherData[] weatherDataArray = null;
-        try {
-            JSONArray forecastData = weatherJsonObject.getJSONArray("list");
-            weatherDataArray = new WeatherData[forecastData.length()];
-            for (int i = 0; i < forecastData.length(); i++) {
-                weatherDataArray[i] = new WeatherData();
+        if (weatherJsonObject != null) {
+            try {
+                JSONArray forecastData = weatherJsonObject.getJSONArray("list");
+                weatherDataArray = new WeatherData[forecastData.length()];
+                for (int i = 0; i < forecastData.length(); i++) {
+                    WeatherData weatherData = new WeatherData();
 
-                JSONObject forecastDay = forecastData.getJSONObject(i);
-                weatherDataArray[i].date= Utility.getFormattedDate(forecastDay.getLong("dt"));
+                    JSONObject forecastDay = forecastData.getJSONObject(i);
+                    weatherData.setDate(Utility.getFormattedDate(forecastDay.getLong("dt")));
 
-                JSONObject weather = forecastDay.getJSONArray("weather").getJSONObject(0);
-                weatherDataArray[i].description=weather.getString("description");
-                JSONObject temperature = forecastDay.getJSONObject("temp");
-                weatherDataArray[i].mintemp= temperature.getString("min");
-                weatherDataArray[i].maxtemp=temperature.getString("max");
+                    JSONObject weather = forecastDay.getJSONArray("weather").getJSONObject(0);
+                    weatherData.setDescription (weather.getString("description"));
+                    JSONObject temperature = forecastDay.getJSONObject("temp");
+                    weatherData.setMintemp(temperature.getString("min"));
+                    weatherData.setMaxtemp(temperature.getString("max"));
+                    weatherDataArray[i] = weatherData;
+                    activity.weatherListView.setAdapter(new WeatherAdapter(activity, R.layout.row, weatherDataArray));
+                }
+            } catch (JSONException ex) {
+
             }
-        } catch (JSONException ex) {
-
         }
-        activity.weatherListView.setAdapter(new WeatherAdapter(activity, R.layout.row, weatherDataArray));
 
     }
 

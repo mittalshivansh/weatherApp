@@ -36,6 +36,8 @@ public class MainActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if(id==R.id.refresh)
+            new FetchWeatherDataTask(this).execute(null, null, null);
         return super.onOptionsItemSelected(item);
     }
 }
