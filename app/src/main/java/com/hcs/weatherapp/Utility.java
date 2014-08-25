@@ -6,14 +6,13 @@ import java.util.Date;
 /**
  * Created by shivanshmittal on 23/08/14.
  */
-public  class Utility {
+public class Utility {
 
-    public static String getFormattedDate(long time){
+    public static String getFormattedDate(long time) {
         Date date = new Date(time * 1000);
         SimpleDateFormat format = new SimpleDateFormat("E, MMM d");
         return format.format(date);
     }
-
 
 
 }

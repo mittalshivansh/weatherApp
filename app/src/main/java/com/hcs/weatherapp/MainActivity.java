@@ -16,7 +16,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         weatherListView = (ListView) findViewById(R.id.weatherList);
-        new FetchWeatherDataTask(this).execute(null,null,null);
+        new FetchWeatherDataTask(this).execute(null, null, null);
     }
 
 
