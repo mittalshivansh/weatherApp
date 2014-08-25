@@ -22,34 +22,38 @@ public class WeatherAdapter extends ArrayAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        if(view == null) {
+        ViewHolder viewHolder;
+        if (view == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             view = inflater.inflate(R.layout.row, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.dateView = (TextView) view.findViewById(R.id.dateview);
+            viewHolder.descriptionView = (TextView) view.findViewById(R.id.descriptionview);
+            viewHolder.highTempView = (TextView) view.findViewById(R.id.max);
+            viewHolder.lowTempView = (TextView) view.findViewById(R.id.min);
+            view.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) view.getTag();
         }
-        if (view != null) {
-            TextView dateView;
-            TextView descriptionView;
-            TextView highTempView;
-            TextView lowTempView;
 
-            dateView = (TextView) view.findViewById(R.id.dateview);
-            descriptionView = (TextView) view.findViewById(R.id.descriptionview);
-            highTempView = (TextView) view.findViewById(R.id.max);
-            lowTempView = (TextView) view.findViewById(R.id.min);
-            String[] weatherData = weatherDataList[position].split("-");
-            dateView.setText(weatherData[0]);
-            descriptionView.setText(weatherData[1]);
-            String[] tempData = weatherData[2].split("/");
-            lowTempView.setText(tempData[0]);
-            highTempView.setText(tempData[1]);
-            return view;
-        }
+        String[] weatherData = weatherDataList[position].split("-");
+        viewHolder.dateView.setText(weatherData[0]);
+        viewHolder.descriptionView.setText(weatherData[1]);
+        String[] tempData = weatherData[2].split("/");
+        viewHolder.lowTempView.setText(tempData[0]);
+        viewHolder.highTempView.setText(tempData[1]);
+        return view;
     }
 
-    @Override
-    public int getCount() {
-        return weatherDataList.length;
+    static class ViewHolder {
+
+        TextView dateView;
+        TextView descriptionView;
+        TextView highTempView;
+        TextView lowTempView;
     }
+
+
 }
 
 
