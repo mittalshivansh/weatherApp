@@ -9,6 +9,8 @@ public class WeatherData {
     String maxtemp;
     String mintemp;
     String description;
+    String icon;
+
+    }
 
 
-}

@@ -82,19 +82,21 @@ public class FetchWeatherDataTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        String[] weatherDataArray = null;
+        WeatherData[] weatherDataArray = null;
         try {
             JSONArray forecastData = weatherJsonObject.getJSONArray("list");
-            weatherDataArray = new String[forecastData.length()];
-            StringBuilder weatherDataStringBuilder;
+            weatherDataArray = new WeatherData[forecastData.length()];
             for (int i = 0; i < forecastData.length(); i++) {
+                weatherDataArray[i] = new WeatherData();
+
                 JSONObject forecastDay = forecastData.getJSONObject(i);
-                weatherDataStringBuilder = new StringBuilder(Utility.getFormattedDate(forecastDay.getLong("dt"))).append("-");
+                weatherDataArray[i].date= Utility.getFormattedDate(forecastDay.getLong("dt"));
+
                 JSONObject weather = forecastDay.getJSONArray("weather").getJSONObject(0);
-                weatherDataStringBuilder.append(weather.getString("description")).append("-");
+                weatherDataArray[i].description=weather.getString("description");
                 JSONObject temperature = forecastDay.getJSONObject("temp");
-                weatherDataStringBuilder.append(temperature.getString("min")).append("/").append(temperature.getString("max"));
-                weatherDataArray[i] = weatherDataStringBuilder.toString();
+                weatherDataArray[i].mintemp= temperature.getString("min");
+                weatherDataArray[i].maxtemp=temperature.getString("max");
             }
         } catch (JSONException ex) {
 

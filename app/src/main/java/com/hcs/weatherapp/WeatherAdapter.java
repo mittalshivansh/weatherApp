@@ -12,9 +12,9 @@ import android.widget.TextView;
  */
 public class WeatherAdapter extends ArrayAdapter {
 
-    private String[] weatherDataList;
+    private WeatherData[] weatherDataList;
 
-    public WeatherAdapter(Context context, int resource, String[] objects) {
+    public WeatherAdapter(Context context, int resource, WeatherData[] objects) {
         super(context, resource, objects);
         weatherDataList = objects;
 
@@ -36,12 +36,10 @@ public class WeatherAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        String[] weatherData = weatherDataList[position].split("-");
-        viewHolder.dateView.setText(weatherData[0]);
-        viewHolder.descriptionView.setText(weatherData[1]);
-        String[] tempData = weatherData[2].split("/");
-        viewHolder.lowTempView.setText(tempData[0]);
-        viewHolder.highTempView.setText(tempData[1]);
+        viewHolder.dateView.setText(weatherDataList[position].date);
+        viewHolder.descriptionView.setText(weatherDataList[position].description);
+        viewHolder.lowTempView.setText(weatherDataList[position].mintemp);
+        viewHolder.highTempView.setText(weatherDataList[position].maxtemp);
         return view;
     }
 
